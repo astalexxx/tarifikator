@@ -41,8 +41,9 @@ function getCoordinates (jsondata){
 function ipRequest(counter, jsondata){
     for (var i = 0; i < jsondata[counter].length; i++){
         let number = jsondata[counter][i].number;
+        let ip = jsondata[counter][i].ip;
         $.getJSON("http://ip-api.com/json/"+jsondata[counter][i].ip, function(data) {
-            addMarker(data.lat, data.lon, number);
+            addMarker(data.lat, data.lon, number, ip);
         });
     }
 }
@@ -57,10 +58,10 @@ function initMap() {
     init();
 }
 
-function addMarker(lat, lon, number){
+function addMarker(lat, lon, number, ip){
     var marker = new google.maps.Marker({
         position: new google.maps.LatLng(lat, lon),
         map: map,
-        title: "Requests: " + number
+        title: "Requests: " + number + ', IP: ' + ip
     });
 }
