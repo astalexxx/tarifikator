@@ -26,24 +26,26 @@ function init(){
 function getCoordinates (jsondata){
     var counter = 0;
     ipRequest(counter, jsondata);
-    counter++;
-    var timerId = setInterval(function() {
-        if (counter == jsondata.length){
-            clearInterval(timerId);
-        } else {
-            ipRequest(counter, jsondata);
-            counter++;
-        }
-    }, 60001);
+}
 
+function timeout(counter, jsondata){
+    setTimeout(function () {
+        ipRequest(counter, jsondata);
+    }, 60001);
 }
 
 function ipRequest(counter, jsondata){
     for (var i = 0; i < jsondata[counter].length; i++){
         let number = jsondata[counter][i].number;
         let ip = jsondata[counter][i].ip;
+        var responses = 0;
         $.getJSON("http://ip-api.com/json/"+jsondata[counter][i].ip, function(data) {
             addMarker(data.lat, data.lon, number, ip);
+            responses++;
+            if (responses == jsondata[counter].length){
+                counter++;
+                timeout(counter, jsondata);
+            }
         });
     }
 }
