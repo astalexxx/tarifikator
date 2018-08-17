@@ -42,7 +42,7 @@ function ipRequest(counter, jsondata){
         $.getJSON("http://ip-api.com/json/"+jsondata[counter][i].ip, function(data) {
             addMarker(data.lat, data.lon, number, ip);
             responses++;
-            if (responses == jsondata[counter].length){
+            if (responses == jsondata[counter].length && counter != jsondata.length-1){
                 counter++;
                 timeout(counter, jsondata);
             }
